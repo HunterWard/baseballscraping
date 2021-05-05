@@ -1,19 +1,20 @@
 
 
 class Matchup():
-    def __init__(self, p1, p2, t1, t2, time):
-        self.pitcher1 = p1
-        self.team1 = t1
-        self.team1TBA = False
+    def __init__(self, hp, ap, ht, at, time):
+        self.homepitcher = hp
+        self.awaypitcher = ap
 
-        self.pitcher2 = p2
-        self.team2 = t2
-        self.team2TBA = False
+        self.hometeam = ht
+        self.awayteam = at
 
         self.gametime = time
 
     def toString(self):
-        return f"Game Time: {self.gametime}\nTeam1: {self.team1}, Pitcher: {self.pitcher1} | Team2: {self.team2}, Pitcher: {self.pitcher2}"
+        print(self.gametime)
+        print(self.awayteam + ' @ ' + self.hometeam)
+        print(self.awaypitcher['id'] + ': ' + self.awaypitcher['name'] + ' vs. ' + self.homepitcher['id'] + ': ' + self.homepitcher['name'])
+
 
 if __name__ == "__main__":
     x = Matchup(669203, 608223, 14, 15, '7:55')
