@@ -1,10 +1,11 @@
-import utils
+import utils, mydb
 import pandas
 import numpy as np
 import datetime, sys
 import hashlib
 from pandas.core.arrays.integer import Int16Dtype, Int32Dtype
 import sqlalchemy
+#from xbaseballAPI.baseballscraping.mydb import getDBCon
 
 
 def general_data_from_search(team, year, playertype="pitcher", date1="", date2="", addid=False):
@@ -98,11 +99,13 @@ def addPitchIds(dataframe):
 
 
 if __name__ == "__main__":
-    df = general_data_from_search('MIL', 2021, addid=True)
+    df = general_data_from_search('LAD', 2021, addid=True)
     #$print(df.head())
     #print(df.head(7))
     #df.to_csv('final.csv', index=False)
 
-    conn = utils.getDBCon()
+    conn = mydb.getDBCon()
 
-    utils.addDFtoDatabase(df, conn,'pitch_event')
+
+
+    mydb.addDFtoDatabase(df, conn,'pitch_event')
