@@ -5,6 +5,7 @@ import datetime, sys
 import hashlib
 from pandas.core.arrays.integer import Int16Dtype, Int32Dtype
 import sqlalchemy
+#from xbaseballAPI.baseballscraping.mydb import addDFtoDatabase
 #from xbaseballAPI.baseballscraping.mydb import getDBCon
 
 
@@ -97,15 +98,44 @@ def addPitchIds(dataframe):
 
     return dataframe
 
+teams = ['ATL',
+        'BAL',
+        'BOS',
+        'MIA',
+        'NYM',
+        'NYY',
+        'PHI',
+        'TB',
+        'TOR',
+        'WSH',
+        'CHC',
+        'CWS',
+        'CIN',
+        'CLE',
+        'DET',
+        'KC',
+        'MIL',
+        'MIN',
+        'PIT',
+        'STL',
+        'ARI',
+        'COL',
+        'HOU',
+        'LAA',
+        'LAD',
+        'OAK',
+        'SD',
+        'SF',
+        'SEA',
+        'TEX']
 
 if __name__ == "__main__":
-    df = general_data_from_search('LAD', 2021, addid=True)
+    #df = general_data_from_search('MIL', 2021, addid=True)
     #$print(df.head())
     #print(df.head(7))
     #df.to_csv('final.csv', index=False)
+    for team in teams:
+        data = general_data_from_search(team, 2017, addid=True)
+        mydb.addDFtoDatabasePG(data, 'pitch_event')
 
-    conn = mydb.getDBCon()
-
-
-
-    mydb.addDFtoDatabase(df, conn,'pitch_event')
+    #mydb.addDFtoDatabasePG(df, 'pitch_event')

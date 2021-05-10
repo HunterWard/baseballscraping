@@ -13,7 +13,7 @@ def getCurrentDivisionStandings(league, division):
     if (league == 'AL'):
         if (division == 'C'):
             dfs = pd.read_html('https://www.baseball-reference.com/leagues/AL/2021-standings.shtml', attrs={'id':'standings_C'})
-            return dfs[0].to_json(orient='records', indent=2)
+            return dfs[0].to_json(orient='records')
         elif (division == 'W'):
             dfs = pd.read_html('https://www.baseball-reference.com/leagues/AL/2021-standings.shtml', attrs={'id':'standings_W'})
             return dfs[0].to_json(orient='records', indent=2)

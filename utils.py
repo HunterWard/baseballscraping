@@ -28,7 +28,6 @@ def clean_ssfb_df(df: pandas.DataFrame):
             'LG',
             'FANGRAPHSNAME',
             'MLBNAME',
-            'CBSID',
             'CBSNAME',
             'RETROID',
             'NFBCID',
@@ -40,7 +39,6 @@ def clean_ssfb_df(df: pandas.DataFrame):
             'YAHOONAME',
             'MSTRBLLNAME',
             'FANTPROSNAME',
-            'LASTCOMMAFIRST',
             'ROTOWIREID',
             'FANDUELNAME',
             'FANDUELID',
@@ -55,7 +53,7 @@ def clean_ssfb_df(df: pandas.DataFrame):
             'ALLPOS',
             ], inplace=True, axis=1)
 
-    return newFrame[['MLBID', 'FIRSTNAME', 'LASTNAME', 'BIRTHDATE', 'TEAM', 'POS', 'BATS', 'THROWS', 'BREFID', 'IDFANGRAPHS', 'ESPNID', 'YAHOOID', 'ACTIVE']]
+    return newFrame[['MLBID', 'FIRSTNAME', 'LASTNAME', 'LASTCOMMAFIRST', 'BIRTHDATE', 'TEAM', 'POS', 'BATS', 'THROWS', 'CBSID', 'BREFID', 'IDFANGRAPHS', 'ESPNID', 'YAHOOID', 'ACTIVE']]
 
 
 
