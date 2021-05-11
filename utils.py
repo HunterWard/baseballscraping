@@ -1,6 +1,7 @@
 import sqlalchemy
 import pandas
 from sqlalchemy.orm.session import *
+import mydb
 
 teams = []
 
@@ -75,6 +76,8 @@ if __name__ == "__main__":
     a = get_sfbb_df()
     a = clean_ssfb_df(a)
 
-    conn = getDBCon()
+    conn = mydb.getDBConPG()
 
-    to_sql_ignore(a, conn, 'player_info')
+    a.columns = map(str.lower, a.columns)
+
+    a.to_sql(con=conn, name='player_info', index=False, if_exists='replace')

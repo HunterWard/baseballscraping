@@ -7,10 +7,9 @@ import requests
 import time as timy
 from xbaseballAPI.baseballscraping.objs.matchup import Matchup
 
-def getProbables():
-    todaysdate = datetime.date.today()
+def getProbables(date: str = datetime.date.today()):
 
-    url = f'https://www.mlb.com/probable-pitchers/{todaysdate}'
+    url = f'https://www.mlb.com/probable-pitchers/{date}'
     headrs = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
 
     page = requests.get(url)
@@ -82,7 +81,7 @@ def getProbables():
         if gameid[0] == 'g':
             gameid = gameid[1:]
 
-        mu = Matchup(homepitcher, awaypitcher, home, away, time, gameid, todaysdate.__str__())
+        mu = Matchup(homepitcher, awaypitcher, home, away, time, gameid, date.__str__())
 
         matchups.append(mu.__dict__)
 
