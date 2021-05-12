@@ -7,7 +7,7 @@ import requests
 import time as timy
 from xbaseballAPI.baseballscraping.objs.matchup import Matchup
 
-def getProbables(date: str = datetime.date.today()):
+def scrapeprobables(date: str = datetime.date.today()):
 
     url = f'https://www.mlb.com/probable-pitchers/{date}'
     headrs = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
@@ -88,6 +88,3 @@ def getProbables(date: str = datetime.date.today()):
     muDict['data'] = matchups
     return muDict
 
-
-if __name__ == '__main__':
-    print(getProbables())
