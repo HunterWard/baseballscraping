@@ -1,12 +1,9 @@
-import utils, mydb
+import requests
 import pandas
-import numpy as np
-import datetime, sys
+import datetime
 import hashlib
 from pandas.core.arrays.integer import Int16Dtype, Int32Dtype
 import sqlalchemy
-#from xbaseballAPI.baseballscraping.mydb import addDFtoDatabase
-#from xbaseballAPI.baseballscraping.mydb import getDBCon
 
 
 def general_data_from_search(team, year, playertype="pitcher", date1="", date2="", addid=False):
@@ -98,44 +95,38 @@ def addPitchIds(dataframe):
 
     return dataframe
 
-teams = ['ATL',
-        'BAL',
-        'BOS',
-        'MIA',
-        'NYM',
-        'NYY',
-        'PHI',
-        'TB',
-        'TOR',
-        'WSH',
-        'CHC',
-        'CWS',
-        'CIN',
-        'CLE',
-        'DET',
-        'KC',
-        'MIL',
-        'MIN',
-        'PIT',
-        'STL',
-        'ARI',
-        'COL',
-        'HOU',
-        'LAA',
-        'LAD',
-        'OAK',
-        'SD',
-        'SF',
-        'SEA',
-        'TEX']
+def requestDaySchedule(date: datetime.date = datetime.date.today):
+    """Get complete days schedule
 
-if __name__ == "__main__":
-    #df = general_data_from_search('MIL', 2021, addid=True)
-    #$print(df.head())
-    #print(df.head(7))
-    #df.to_csv('final.csv', index=False)
-    for team in teams:
-        data = general_data_from_search(team, 2017, addid=True)
-        mydb.addDFtoDatabasePG(data, 'pitch_event')
+    Args:
+        date (datetime.date, optional): Date to search for. Defaults to datetime.date.today.
 
-    #mydb.addDFtoDatabasePG(df, 'pitch_event')
+    Returns:
+        Dictionary: Dictionary of all games being played on that day
+    """
+    import requests
+
+    url= f'https://baseballsavant.mlb.com/schedule?date={date}'
+    headrs = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
+
+    resp = requests.get(url, headers=headrs)
+    # Get all info for current day
+    dayinfo = getDayData(resp)
+
+    return dayinfo
+
+def getDayData(data: requests.Response):
+    """Gets the complete info of the day. Contains:
+    date: str - The day the object contains info for in YYYY-MM-DD
+    events: [] - As of 5/11/21 unknown but guessing it will contain all star events
+    games: [{}] - List of dicts (one for each game) of literally everything you need to know about a game including:
+        - Live score, team info, probable pitchers, venue info and more
+
+    Args:
+        data (requests.Response): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    jsonData = data.json()
+    return jsonData['schedule']['dates'][0]
