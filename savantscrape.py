@@ -49,7 +49,7 @@ def general_data_from_search(team, year, playertype="pitcher", date1="", date2="
     })
 
     # Data comes with columns that will always be empty **EVEN IN YEARS WHERE THIS DATA WAS NOT DEPRECATED, ITS ALL DELETED**
-    # Dropping player name, pitcher.1 and fielder_2.1 because they are duplicates of other rows
+    # Dropping player name, pitcher.1 and fielder_2.1 because they are duplicates of other cols
     scrapedData.drop(['umpire',
                       'spin_dir',
                       'spin_rate_deprecated',
@@ -95,7 +95,7 @@ def addPitchIds(dataframe):
 
     return dataframe
 
-def requestDaySchedule(date: datetime.date = datetime.date.today):
+def requestDaySchedule(date: datetime.date):
     """Get complete days schedule
 
     Args:
@@ -111,12 +111,13 @@ def requestDaySchedule(date: datetime.date = datetime.date.today):
 
     resp = requests.get(url, headers=headrs)
     # Get all info for current day
-    dayinfo = getDayData(resp)
+    dayinfo = get_day_data(resp)
 
     return dayinfo
 
-def getDayData(data: requests.Response):
+def get_day_data(data: requests.Response):
     """Gets the complete info of the day. Contains:
+
     date: str - The day the object contains info for in YYYY-MM-DD
     events: [] - As of 5/11/21 unknown but guessing it will contain all star events
     games: [{}] - List of dicts (one for each game) of literally everything you need to know about a game including:

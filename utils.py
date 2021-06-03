@@ -1,7 +1,12 @@
+from datetime import date
+import datetime
 import sqlalchemy
 import pandas
+from sqlalchemy.engine import result
 from sqlalchemy.orm.session import *
+from sqlalchemy.sql import sqltypes
 import mydb
+from sqlalchemy.dialects import postgresql
 
 teams = []
 
@@ -61,16 +66,25 @@ def clean_ssfb_df(df: pandas.DataFrame):
 def to_sql_ignore(df: pandas.DataFrame, engine: sqlalchemy.engine, tablename: str):
     temp_table = tablename + '_temp'
 
-    df.to_sql(con=conn, name=temp_table, index=False)
+    df.to_sql(con=engine, name=temp_table, index=False, if_exists='replace', dtype= {
+        'game_date': sqlalchemy.Date,
+        'pitchid': sqlalchemy.types.LargeBinary
+    })
 
+    """
+    connection = engine.connect()
+    result = connection.execute(f'INSERT INTO {tablename} (SELECT * FROM {temp_table}) ON CONFLICT DO NOTHING')
+    connection.close()
+
+    """
     with engine.begin() as cn:
-        insert_sql = f'INSERT IGNORE INTO {tablename} (SELECT * FROM {temp_table})'
+        insert_sql = f'INSERT INTO {tablename} (SELECT * FROM {temp_table}) ON CONFLICT DO NOTHING'
         cn.execute(insert_sql)
         drop_sql = f'DROP TABLE {temp_table}'
         cn.execute(drop_sql)
 
 
-
+"""
 if __name__ == "__main__":
 
     a = get_sfbb_df()
@@ -81,3 +95,4 @@ if __name__ == "__main__":
     a.columns = map(str.lower, a.columns)
 
     a.to_sql(con=conn, name='player_info', index=False, if_exists='replace')
+"""
